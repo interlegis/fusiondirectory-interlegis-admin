@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<filterdef>
+  <definition>
+    <category>interlegis</category>
+    <template>interlegis-filter.tpl</template>
+    <initial>true</initial>
+  </definition>
+
+  <search>
+    <query>
+      <backend>LDAP</backend>
+      <filter>(&amp;(|$PORTALMODELO$SAPL)$NAME)</filter>
+      <attribute>dn</attribute>
+      <attribute>cn</attribute>
+      <attribute>city</attribute>
+      <attribute>interlegisCode</attribute>
+      <attribute>zopeInstance</attribute>
+      <attribute>activationDate</attribute>
+    </query>
+    <scope>auto</scope>
+  </search>
+
+  <element>
+    <type>textfield</type>
+    <tag>NAME</tag>
+    <size>20</size>
+    <maxlength>60</maxlength>
+    <default></default>
+    <unset></unset>
+    <set>(|(cn=*$*)(mail=*$*)(description=*$*))</set>
+    <alphabet>true</alphabet>
+    <autocomplete>
+      <backend>LDAP</backend>
+      <filter>(&amp;(|$PORTALMODELO$SAPL)(|(mail=*$NAME*)(cn=*$NAME*)(description=*$NAME*)))</filter>
+      <attribute>cn</attribute>
+      <attribute>city</attribute>
+      <attribute>interlegisCode</attribute>
+      <attribute>zopeInstance</attribute>
+      <attribute>activationDate</attribute>
+      <frequency>0.5</frequency>
+      <characters>3</characters>
+    </autocomplete>
+  </element>
+
+  <element>
+    <type>checkbox</type>
+    <tag>PORTALMODELO</tag>
+    <default>true</default>
+    <unset></unset>
+    <set>(objectClass=portalModelo)</set>
+  </element>
+
+  <element>
+    <type>checkbox</type>
+    <tag>SAPL</tag>
+    <default>true</default>
+    <unset></unset>
+    <set>(objectClass=sapl)</set>
+  </element>
+
+</filterdef>
