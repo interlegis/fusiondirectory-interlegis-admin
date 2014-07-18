@@ -70,10 +70,10 @@
     </column>
 
     <column>
-      <label>Zope Instance</label>
-      <sortAttribute>zopeInstance</sortAttribute>
+      <label>Zope Instance Group</label>
+      <sortAttribute>instanceGroup</sortAttribute>
       <sortType>integer</sortType>
-      <value>%{filter:link(row,dn,"%d",zopeInstance)}</value>
+      <value>%{filter:link(row,dn,"%d",instanceGroup)}</value>
       <export>true</export>
     </column>
 

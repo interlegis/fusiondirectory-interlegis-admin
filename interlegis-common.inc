@@ -87,7 +87,7 @@ function decide_instance($ldap, $objectType, $perInstance = 50) {
 }
 
 function get_instance_objects($ldap, $objectType, $instance) { 
-   $ldap->search('(&(objectClass='.$objectType.')(zopeInstance='.$instance.'))', array('interlegisCode'));
+   $ldap->search('(&(objectClass='.$objectType.')(instanceGroup='.$instance.'))', array('interlegisCode'));
    $objects = array();
    while ($attrs = $ldap->fetch()){
       for ($i=0;$i < sizeof($attrs['interlegisCode'])-1; $i++){
@@ -99,20 +99,20 @@ function get_instance_objects($ldap, $objectType, $instance) {
 
 function get_zope_instances($ldap, $objectType) {
    //lets get the DB instances
-   $ldap->search('(&(objectClass='.$objectType.'DBServer)(zopeInstance=*))', array('zopeInstance'));
+   $ldap->search('(&(objectClass='.$objectType.'DBServer)(instanceGroup=*))', array('instanceGroup'));
    $dbinstances = array();
    while ($attrs = $ldap->fetch()){
-      for ($i=0;$i < sizeof($attrs['zopeInstance'])-1; $i++){
-        $dbinstances[sizeof($dbinstances)] = $attrs['zopeInstance'][$i];
+      for ($i=0;$i < sizeof($attrs['instanceGroup'])-1; $i++){
+        $dbinstances[sizeof($dbinstances)] = $attrs['instanceGroup'][$i];
       }
    } 
 
    //now lets get the Application Server Instances
-   $ldap->search('(&(objectClass='.$objectType.'AppServer)(zopeInstance=*))', array('zopeInstance'));
+   $ldap->search('(&(objectClass='.$objectType.'AppServer)(instanceGroup=*))', array('instanceGroup'));
    $appinstances = array();
    while ($attrs = $ldap->fetch()){
-      for ($i=0;$i < sizeof($attrs['zopeInstance'])-1; $i++){
-        $appinstances[sizeof($appinstances)] = $attrs['zopeInstance'][$i];
+      for ($i=0;$i < sizeof($attrs['instanceGroup'])-1; $i++){
+        $appinstances[sizeof($appinstances)] = $attrs['instanceGroup'][$i];
       }
    }
    

@@ -46,7 +46,7 @@ class portalModelo extends simplePlugin
               'mail', TRUE
           ),
           new StringAttribute ( _('Interlegis code'), _('3 letter unique Interlegis code.'), 'interlegisCode', TRUE , '' ),
-          new IntAttribute ( _('Zope instance'), _('Zope instance for the Portal Modelo.'), 'zopeInstance', TRUE , 8100, 8199),
+          new IntAttribute ( _('Zope instance Group'), _('Zope instance Group for the Portal Modelo.'), 'instanceGroup', TRUE , 0, 99),
 	  new DateAttribute (_('Activation Date'), _('Activation Date for the Interlegis Product.'), 'activationDate', TRUE, "U"),
           new TextAreaAttribute (
             _('Remarks'), _('Remarks for the Portal creation.'),
@@ -64,7 +64,7 @@ class portalModelo extends simplePlugin
     $this->attributesInfo['main']['attrs']['cn']->setUnique(TRUE);
     $this->attributesAccess['interlegisCode']->setDisabled(TRUE);
     $this->attributesAccess['activationDate']->setDisabled(TRUE);
-    $this->attributesAccess['zopeInstance']->setDisabled(TRUE);
+    $this->attributesAccess['instanceGroup']->setDisabled(TRUE);
 
     $ldap = $config->get_ldap_link();
     $ldap->cd($config->current['BASE']);
@@ -72,14 +72,14 @@ class portalModelo extends simplePlugin
     $this->attributesAccess['city']->setValue($cityName);
 
     // preenche o código Interlegis
-    #if ($this->attributesAccess['interlegisCode']->getValue() == '') {
-    #  $this->attributesAccess['interlegisCode']->setValue(generateInterlegisCode($cityName, $ldap));
-    #}
+    if ($this->attributesAccess['interlegisCode']->getValue() == '') {
+      $this->attributesAccess['interlegisCode']->setValue(generateInterlegisCode($cityName, $ldap));
+    }
 
     // preenche a instancia do Zope
-    #if ($this->attributesAccess['zopeInstance']->getValue() == '') {
-    #  $this->attributesAccess['zopeInstance']->setValue(decide_instance($ldap,'portalModelo'));
-    #}
+    if ($this->attributesAccess['instanceGroup']->getValue() == '') {
+      $this->attributesAccess['instanceGroup']->setValue(decide_instance($ldap,'portalModelo'));
+    }
 
 
   }

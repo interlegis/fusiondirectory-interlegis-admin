@@ -15,7 +15,7 @@
       <attribute>cn</attribute>
       <attribute>city</attribute>
       <attribute>interlegisCode</attribute>
-      <attribute>zopeInstance</attribute>
+      <attribute>instanceGroup</attribute>
       <attribute>activationDate</attribute>
     </query>
     <scope>auto</scope>
@@ -36,7 +36,7 @@
       <attribute>cn</attribute>
       <attribute>city</attribute>
       <attribute>interlegisCode</attribute>
-      <attribute>zopeInstance</attribute>
+      <attribute>instanceGroup</attribute>
       <attribute>activationDate</attribute>
       <frequency>0.5</frequency>
       <characters>3</characters>
