@@ -99,7 +99,7 @@ function get_instance_objects($ldap, $objectType, $instance) {
 
 function get_zope_instances($ldap, $objectType) {
    //lets get the DB instances
-   $ldap->search('(&(objectClass='.$objectType.'DBServer)(instanceGroup=*))', array('instanceGroup'));
+   $ldap->search('(&(objectClass='.$objectType.'PrimaryDBServer)(instanceGroup=*))', array('instanceGroup'));
    $dbinstances = array();
    while ($attrs = $ldap->fetch()){
       for ($i=0;$i < sizeof($attrs['instanceGroup'])-1; $i++){
