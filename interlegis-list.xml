@@ -3,7 +3,7 @@
 <list>
   <definition>
     <departmentBrowser>true</departmentBrowser>
-    <departmentRootVisible>true</departmentRootVisible>
+    <departmentRootVisible>false</departmentRootVisible>
     <baseMode>true</baseMode>
     <multiSelect>true</multiSelect>
     <template>simple-list.tpl</template>
@@ -21,9 +21,9 @@
 
     <objectType>
       <label>SAPL</label>
-      <objectClass>interlegisProducts</objectClass>
+      <objectClass>sapl</objectClass>
       <category>interlegis</category>
-      <class>interlegisProducts</class>
+      <class>sapl</class>
       <image>plugins/interlegis/images/iconMiniSAPL.png</image>
     </objectType>
 

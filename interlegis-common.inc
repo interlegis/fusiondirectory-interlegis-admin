@@ -73,7 +73,7 @@ function count_interlegis_codes($ldap, $code) {
   return $ldap->count();
 }
 
-function decide_instance($ldap, $objectType, $perInstance = 50) {
+function decide_instance($ldap, $objectType, $perInstance = 25) {
    $instances = get_zope_instances($ldap, $objectType);
    $theinstance = null;
    foreach ( $instances as $instance ) {

@@ -6,10 +6,9 @@
 
 <div class="contentboxb">
 
-  {$PORTALMODELO}<label for="PORTALMODELO">&nbsp;{t}Show Portal Modelo{/t}</label><br>
-  {$SAPL}<label for="SAPL">&nbsp;{t}Show SAPL{/t}</label><br>
+ {$PORTALMODELO}<label for="PORTALMODELO">&nbsp;{t}Show Portal Modelo{/t}</label><br>
+ {$SAPL}<label for="SAPL">&nbsp;{t}Show SAPL{/t}</label><br>
 
-  <div style="border-top:1px solid #AAAAAA"></div>
 
  {$SCOPE}
 

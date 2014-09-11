@@ -18,21 +18,26 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-class interlegisProducts extends simplePlugin
+class sapl extends simplePlugin
 {
   var $mainTab = TRUE;
-  var $objectclasses = array('top', 'interlegisProducts');
+  var $objectclasses = array('top', 'sapl');
 
   /* Return plugin informations for acl handling  */
   public static function plInfo()
   {
     return array(
-      'plShortName'   => _('Temporary mail distribution'),
-      'plDescription' => _('Temporary mail distribution'),
+      'plShortName'   => _('SAPL'),
+      'plDescription' => _('Sistema de Apoio ao Processo Legislativo'),
       'plSelfModify'  => FALSE,
-      'plCategory'    => array('interlegis'),
-      'plObjectType'  => array('interlegisProducts' => array('name'  => _('Temporary mail distribution'),
-                                                              'filter'  => 'objectClass=interlegisProducts')),
+      'plCategory'    => array('Interlegis'),
+      'plObjectType'  => array('sapl' => array(
+        'name'        => _('SAPL'),
+        'filter'      => 'objectClass=sapl',
+        'aclCategory' => 'Interlegis',
+        'icon'        => 'plugins/interlegis/images/iconMiniSAPL.png',
+        'ou'          => 'ou=interlegis,',
+      )),
 
       'plProvidedAcls' => parent::generatePlProvidedAcls(self::getAttributesInfo())
     );
@@ -45,34 +50,21 @@ class interlegisProducts extends simplePlugin
     return array(
       // Attributes are grouped by section
       'main' => array(
-        'name'  => _('Mail distribution'),
+        'name'  => _('SAPL'),
         'attrs' => array(
           new BaseSelectorAttribute ("ou=interlegis,"),
-          new HostNameAttribute (_('Name'), _('Name to identify this alias'), 'cn', TRUE),
-          new TextAreaAttribute (
-            _('Description'), _('Description of this alias'),
-            'description', FALSE
-          ),
+          new HostNameAttribute (_('Name'), _('Entity name for this SAPL.'), 'cn', TRUE, "sapl"),
+          new StringAttribute (_('City'),_('Name of the city'), 'city', TRUE ),
           new MailAttribute (
-            _('Email address'), _('Email address'),
-            'mail', TRUE
+              _('Admin e-mail'), _('Mail address of the SAPL administrator.'),
+              'mail', TRUE
           ),
-          new SetAttribute(
-            new MailAttribute (
-              _('Email aliases'), _('Aliases for this email address'),
-              'gosaMailAlternateAddress', TRUE
-            )
-          ),
-          new SelectAttribute (
-            _('Mail server'), _('Mail server fot this alias'),
-            'gosaMailServer', TRUE,
-            array_keys($config->data['SERVERS']['IMAP'])
-          ),
-          new DateAttribute(
-            _('Expiration date'), _('Date after which the alias should be deleted. Leave empty for no deletion.'),
-            'aliasExpirationDate', FALSE,
-            'U', // Unix timestamp
-            ''
+          new StringAttribute ( _('Interlegis code'), _('3 letter unique Interlegis code.'), 'interlegisCode', TRUE , '' ),
+          new IntAttribute ( _('Zope instance Group'), _('Zope instance Group for the SAPL.'), 'instanceGroup', TRUE , 0, 99),
+          new DateAttribute (_('Activation Date'), _('Activation Date for the Interlegis Product.'), 'activationDate', TRUE, "U"),
+          new TextAreaAttribute (
+            _('Remarks'), _('Remarks for the Portal creation.'),
+            'description', FALSE
           )
         )
       ),

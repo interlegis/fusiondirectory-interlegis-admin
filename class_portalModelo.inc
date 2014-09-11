@@ -18,12 +18,14 @@ class portalModelo extends simplePlugin
       'plShortName'   => _('Portal Modelo'),
       'plDescription' => _('Portal Modelo'),
       'plSelfModify'  => FALSE,
-      'plCategory'    => array('interlegis'),
-      'plObjectType'  => array('portalModelo' => array('name'  => _('Portal Modelo'),
-                                                       'filter'=> 'objectClass=portalModelo',
-                                                       'icon'  => 'plugins/interlegis/images/iconMiniPortalModelo.png' 
-                                                 )
-                              ),
+      'plCategory'    => array('Interlegis'),
+      'plObjectType'  => array('portalModelo' => array(
+        'name'        => _('Portal Modelo'),
+        'filter'      => 'objectClass=portalModelo',
+        'aclCategory' => 'Interlegis',
+        'icon'        => 'plugins/interlegis/images/iconMiniPortalModelo.png',
+        'ou'          => 'ou=interlegis,', 
+      )),
 
       'plProvidedAcls' => parent::generatePlProvidedAcls(self::getAttributesInfo())
     );
@@ -41,6 +43,18 @@ class portalModelo extends simplePlugin
           new BaseSelectorAttribute ("ou=interlegis,"),
           new HostNameAttribute (_('Name'), _('Entity name for this Portal.'), 'cn', TRUE, "www"),
           new StringAttribute (_('City'),_('Name of the city'), 'city', TRUE ),
+          new SelectAttribute (
+              _('Prefix'),                    // Label of the attribute
+              _('Prefix for the Portal'),     // Description
+             'prefix',                        // LDAP name
+             TRUE,                            // Mandatory
+             array('cm','cn','al','tc'), // [SelectAttribute] Choices
+             "", // We don't set any default value, it will be the first one
+             array('Camara Municipal',
+                   'Congresso Nacional',
+                   'Assembleia Legislativa',
+                   'Tribunal de Contas')  // [SelectAttribute] Output choices
+          ),
           new MailAttribute (
               _('Admin e-mail'), _('Mail address of the portal administrator.'),
               'mail', TRUE
@@ -62,7 +76,7 @@ class portalModelo extends simplePlugin
     parent::__construct($config, $dn, $object);
 
     $this->attributesInfo['main']['attrs']['cn']->setUnique(TRUE);
-    $this->attributesAccess['interlegisCode']->setDisabled(TRUE);
+    #$this->attributesAccess['interlegisCode']->setDisabled(TRUE);
     $this->attributesAccess['activationDate']->setDisabled(TRUE);
     $this->attributesAccess['instanceGroup']->setDisabled(TRUE);
 

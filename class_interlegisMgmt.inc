@@ -8,24 +8,31 @@ class interlegisMgmt extends management
 {
   // Tab definitions
   protected $tabClass     = "simpleTabs";
-  protected $aclCategory  = "interlegis";
+  protected $aclCategory  = "Interlegis";
   protected $aclPlugin    = "interlegis";
   protected $objectName   = "interlegis";
+
+  protected $departmentBrowser      = TRUE;
+  protected $departmentRootVisible  = TRUE;
+  protected $baseMode               = TRUE;
+  protected $multiSelect            = TRUE;
+
 
   /* Return plugin informations for acl handling  */
   public static function plInfo()
   {
     return array(
-      "plShortName"   => _("Interlegis"),
-      "plDescription" => _("Interlegis Products"),
-      "plIcon"        => "plugins/interlegis/images/icon.png",
-      "plSelfModify"  => FALSE,
-      "plSection"     => "admin",
-      "plPriority"    => 4,
-      "plCategory"    => array("interlegis" => array("description"  => _("Interlegis Products"),
+      "plShortName"    => _("Interlegis"),
+      "plDescription"  => _("Interlegis Products"),
+      "plIcon"         => "plugins/interlegis/images/icon.png",
+      "plSelfModify"   => FALSE,
+      "plSection"      => "admin",
+      "plPriority"     => 4,
+      "plCategory"     => array("Interlegis" => array("description"  => _("Interlegis Products"),
                                                      "objectClass"  => array( "portalModelo", "sapl")
                                                )
                          ),
+      "plManages"      => array('portalModelo', 'sapl'),
       "plProvidedAcls" => array()
     );
   }
@@ -35,7 +42,7 @@ class interlegisMgmt extends management
     $this->config = $config;
     $this->ui     = $ui;
 
-    $this->storagePoints = array("ou=interlegis,");
+    $this->storagePoints = array("ou=interlegis");
 
     // Build filter
     if (session::global_is_set(get_class($this)."_filter")) {

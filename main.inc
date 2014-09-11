@@ -32,6 +32,11 @@ if ( $cleanup ){
   session::un_set('interlegisMgmt');
 }else{
 
+  /* Reset requested? */
+  if (isset($_GET['reset']) && $_GET['reset'] == 1){
+    session::un_set ('interlegisMgmt');
+  }
+
   /* Create usermanagement object on demand */
   if (!session::is_set('interlegisMgmt')){
     $interlegisMgmt= new interlegisMgmt ($config, $ui);
@@ -40,10 +45,6 @@ if ( $cleanup ){
   $interlegisMgmt = session::get('interlegisMgmt');
   $display= $interlegisMgmt->execute();
 
-  /* Reset requested? */
-  if (isset($_GET['reset']) && $_GET['reset'] == 1){
-    session::un_set ('interlegisMgmt');
-  }
 
   /* Show and save dialog */
   session::set('interlegisMgmt',$interlegisMgmt);
