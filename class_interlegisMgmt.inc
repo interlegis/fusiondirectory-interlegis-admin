@@ -26,7 +26,7 @@ class interlegisMgmt extends management
       "plDescription"  => _("Interlegis Products"),
       "plIcon"         => "plugins/interlegis/images/icon.png",
       "plSelfModify"   => FALSE,
-      "plSection"      => "admin",
+      "plSection"      => 'systems',
       "plPriority"     => 4,
       "plCategory"     => array("Interlegis" => array("description"  => _("Interlegis Products"),
                                                      "objectClass"  => array( "portalModelo", "sapl")
