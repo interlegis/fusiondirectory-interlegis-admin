@@ -48,12 +48,13 @@ class portalModelo extends simplePlugin
               _('Prefix for the Portal'),     // Description
              'prefix',                        // LDAP name
              TRUE,                            // Mandatory
-             array('cm','cn','al','tc'), // [SelectAttribute] Choices
+             array('cm','cn','al','tc','pi'), // [SelectAttribute] Choices
              "", // We don't set any default value, it will be the first one
              array('Camara Municipal',
                    'Congresso Nacional',
                    'Assembleia Legislativa',
-                   'Tribunal de Contas')  // [SelectAttribute] Output choices
+                   'Tribunal de Contas',
+                   'Parlamento Internacional') // [SelectAttribute] Output choices
           ),
           new MailAttribute (
               _('Admin e-mail'), _('Mail address of the portal administrator.'),
