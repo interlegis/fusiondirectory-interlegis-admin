@@ -62,6 +62,13 @@ class portalModelo extends simplePlugin
           new StringAttribute ( _('Interlegis code'), _('3 letter unique Interlegis code.'), 'interlegisCode', TRUE , '' ),
           new IntAttribute ( _('Zope instance Group'), _('Zope instance Group for the Portal Modelo.'), 'instanceGroup', TRUE , 0, 99),
 	  new DateAttribute (_('Activation Date'), _('Activation Date for the Interlegis Product.'), 'activationDate', TRUE, "U"),
+          new SetAttribute (
+            new HostNameAttribute (
+              _('Alias URL'),
+              _('Alternate URL used to access the Portal Modelo.'),
+              'aliasURL',
+              FALSE)
+          ),
           new TextAreaAttribute (
             _('Remarks'), _('Remarks for the Portal creation.'),
             'description', FALSE
