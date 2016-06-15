@@ -88,6 +88,7 @@ class portalModelo extends simplePlugin
     $this->attributesAccess['activationDate']->setDisabled(TRUE);
     $this->attributesAccess['instanceGroup']->setDisabled(TRUE);
 
+    global $config;
     $ldap = $config->get_ldap_link();
     $ldap->cd($config->current['BASE']);
     $cityName = $ldap->get_attribute($this->base,"description");

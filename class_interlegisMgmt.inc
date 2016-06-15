@@ -4,19 +4,28 @@
 
 */
 
-class interlegisMgmt extends management
+class interlegisMgmt extends simpleManagement
 {
   // Tab definitions
   protected $tabClass     = "simpleTabs";
   protected $aclCategory  = "Interlegis";
   protected $aclPlugin    = "interlegis";
   protected $objectName   = "interlegis";
+  protected $objectTypes  = array('portalModelo', 'sapl');
+  protected $autoFilterAttributes = array('dn', 
+                                          'cn', 
+                                          'city', 
+                                          'interlegisCode', 
+                                          'instanceGroup',
+                                          'activationDate');
 
   protected $departmentBrowser      = TRUE;
   protected $departmentRootVisible  = TRUE;
   protected $baseMode               = TRUE;
   protected $multiSelect            = TRUE;
-
+  protected $autoFilter             = TRUE;
+  protected $filterXMLPath          = NULL;
+  protected $listXMLPath            = NULL;
 
   /* Return plugin informations for acl handling  */
   public static function plInfo()
@@ -37,29 +46,20 @@ class interlegisMgmt extends management
     );
   }
 
-  function __construct($config, $ui)
+  function __construct()
   {
-    $this->config = $config;
-    $this->ui     = $ui;
+    $this->filterXMLPath  = get_template_path('interlegis-filter.xml',  TRUE, dirname(__FILE__));
+    $this->listXMLPath    = get_template_path('interlegis-list.xml',    TRUE, dirname(__FILE__));
+    $this->storagePoints  = array("ou=interlegis");
 
-    $this->storagePoints = array("ou=interlegis");
+    parent::__construct();
 
-    // Build filter
-    if (session::global_is_set(get_class($this)."_filter")) {
-      $filter = session::global_get(get_class($this)."_filter");
-    } else {
-      $filter = new filter(get_template_path("interlegis-filter.xml", TRUE));
-      $filter->setObjectStorage($this->storagePoints);
-    }
-    $this->setFilter($filter);
+  }
 
-    // Build headpage
-    $headpage = new listing(get_template_path("interlegis-list.xml", TRUE));
-    $headpage->registerElementFilter("filterDate", "interlegisMgmt::filterDate");
-    $headpage->setFilter($filter);
-
-    parent::__construct($config, $ui, "interlegis", $headpage);
-
+  function configureHeadpage ()
+  {
+    $this->headpage->registerElementFilter("filterDate", "interlegisMgmt::filterDate");
+    parent::configureHeadpage();
     $this->registerAction("edit_interlegis", "editEntry");
     $this->registerAction("new_portalModelo", "newEntry");
     $this->registerAction("new_sapl", "newEntry");
@@ -116,37 +116,6 @@ class interlegisMgmt extends management
     }
   }
 
-  /*! \brief  This method is used to queue and process copy&paste actions.
-   *          Allows to copy, cut and paste mutliple entries at once.
-   *  @param  String  'action'  The name of the action which was the used as trigger.
-   *  @param  Array   'target'  A list of object dns, which should be affected by this method.
-   *  @param  Array   'all'     A combination of both 'action' and 'target'.
-   */
-  function copyPasteHandler($action = "", $target = array(), $all = array(),
-      $altTabClass = "", $altTabType = "", $altAclCategory = "", $altAclPlugin = "")
-  {
-    // Add entries to queue
-    if ($action == "copy" || $action == "cut") {
-      $headpage = $this->getHeadpage();
-
-      $targets = array();
-      foreach ($target as $dn) {
-        $type = $headpage->getType($dn);
-        if (empty($type)) {
-          continue;
-        }
-        $targets[$type][] = $dn;
-      }
-
-      foreach ($targets as $type => $dns) {
-        return management::copyPasteHandler($action, $dns, $all, $this->tabClass,
-                                    strtoupper($type).'TABS', $this->aclCategory);
-      }
-    } else {
-      return management::copyPasteHandler($action, $target, $all);
-    }
-  }
-
   static function filterDate()
   {
     if (func_num_args() == 0) {
@@ -162,5 +131,5 @@ class interlegisMgmt extends management
     }
     return '&nbsp;';
   }
-	}
-	?>
+}
+?>
