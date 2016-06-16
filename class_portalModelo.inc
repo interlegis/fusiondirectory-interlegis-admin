@@ -40,7 +40,7 @@ class portalModelo extends simplePlugin
       'main' => array(
         'name'  => _('Portal Modelo'),
         'attrs' => array(
-          new BaseSelectorAttribute ("ou=interlegis,"),
+          new BaseSelectorAttribute ('ou=interlegis,'),
           new HostNameAttribute (_('Name'), _('Entity name for this Portal.'), 'cn', TRUE, "www"),
           new StringAttribute (_('City'),_('Name of the city'), 'city', TRUE ),
           new SelectAttribute (
@@ -79,9 +79,9 @@ class portalModelo extends simplePlugin
     );
   }
 
-  function __construct (&$config, $dn = NULL, $object = NULL)
+  function __construct ($dn = NULL, $object = NULL, $parent = NULL, $mainTab = FALSE)
   {
-    parent::__construct($config, $dn, $object);
+    parent::__construct($dn, $object, $parent, $mainTab);
 
     $this->attributesInfo['main']['attrs']['cn']->setUnique(TRUE);
     #$this->attributesAccess['interlegisCode']->setDisabled(TRUE);
