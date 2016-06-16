@@ -19,36 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/* Remove locks created by this plugin */
-if ($remove_lock){
-  if(session::is_set('interlegisMgmt')){
-      $macl = session::get('interlegisMgmt');
-      $macl->remove_lock();
-  }
-}
+simpleManagement::mainInc('interlegisMgmt');
 
-/* Remove this plugin from session */
-if ( $cleanup ){
-  session::un_set('interlegisMgmt');
-}else{
-
-  /* Reset requested? */
-  if (isset($_GET['reset']) && $_GET['reset'] == 1){
-    session::un_set ('interlegisMgmt');
-  }
-
-  /* Create usermanagement object on demand */
-  if (!session::is_set('interlegisMgmt')){
-    $interlegisMgmt= new interlegisMgmt ($config, $ui);
-    session::set('interlegisMgmt',$interlegisMgmt);
-  }
-  $interlegisMgmt = session::get('interlegisMgmt');
-  $display= $interlegisMgmt->execute();
-
-
-  /* Show and save dialog */
-  session::set('interlegisMgmt',$interlegisMgmt);
-}
-
-// vim:tabstop=2:expandtab:shiftwidth=2:filetype=php:syntax:ruler:
 ?>

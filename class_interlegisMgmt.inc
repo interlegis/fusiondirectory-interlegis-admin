@@ -6,8 +6,6 @@
 
 class interlegisMgmt extends simpleManagement
 {
-  // Tab definitions
-  protected $tabClass     = "simpleTabs";
   protected $aclCategory  = "Interlegis";
   protected $aclPlugin    = "interlegis";
   protected $objectName   = "interlegis";
@@ -18,14 +16,6 @@ class interlegisMgmt extends simpleManagement
                                           'interlegisCode', 
                                           'instanceGroup',
                                           'activationDate');
-
-  protected $departmentBrowser      = TRUE;
-  protected $departmentRootVisible  = TRUE;
-  protected $baseMode               = TRUE;
-  protected $multiSelect            = TRUE;
-  protected $autoFilter             = TRUE;
-  protected $filterXMLPath          = NULL;
-  protected $listXMLPath            = NULL;
 
   /* Return plugin informations for acl handling  */
   public static function plInfo()
@@ -46,74 +36,51 @@ class interlegisMgmt extends simpleManagement
     );
   }
 
-  function __construct()
-  {
-    $this->filterXMLPath  = get_template_path('interlegis-filter.xml',  TRUE, dirname(__FILE__));
-    $this->listXMLPath    = get_template_path('interlegis-list.xml',    TRUE, dirname(__FILE__));
-    $this->storagePoints  = array("ou=interlegis");
-
-    parent::__construct();
-
-  }
-
   function configureHeadpage ()
   {
-    $this->headpage->registerElementFilter("filterDate", "interlegisMgmt::filterDate");
+    $this->headpage->registerElementFilter('filterDate', 'interlegisMgmt::filterDate');
     parent::configureHeadpage();
-    $this->registerAction("edit_interlegis", "editEntry");
-    $this->registerAction("new_portalModelo", "newEntry");
-    $this->registerAction("new_sapl", "newEntry");
   }
 
-  // Overridden new handler - We've different types of departments to create!
-  function newEntry($action = "", $target = array(), $all = array(), $altTabClass = "",
-                    $altTabType = "", $altAclCategory = "")
+
+
+  function parseXML ($file)
   {
-    $type = preg_replace("/^new_/", "", $action);
-
-    return management::newEntry($action, $target, $all, $this->tabClass,
-                                strtoupper($type).'TABS', $this->aclCategory);
-  }
-
-  function editEntry( $action = "", $target = array(), $all = array(), $altTabClass = "",
-                      $altTabType = "", $altAclCategory = "")
-  {
-    $type = $this->getHeadpage()->getType($target[0]);
-
-    $str = management::editEntry( $action, $target, $all, $this->tabClass,
-                                  strtoupper($type).'TABS', $this->aclCategory);
-    if (preg_match("/^edit_/", $action)) {
-      $tab = preg_replace("/^edit_/", "", $action);
-      if (isset($this->tabObject->by_object[$tab])) {
-        $this->tabObject->current = $tab;
-      } else {
-        trigger_error("Unknown tab: ".$tab);
-      }
-    }
-    if (!empty($str)) {
-      return $str;
-    }
-  }
-
-  function removeEntryConfirmed($action = "", $target = array(), $all = array(),
-                                $altTabClass = "", $altTabType = "", $altAclCategory = "")
-  {
-    $headpage = $this->getHeadpage();
-
-    $targets = array();
-    foreach ($this->dns as $dn) {
-      $type = $headpage->getType($dn);
-      if (empty($type)) {
-        continue;
-      }
-      $targets[$type][] = $dn;
-    }
-
-    foreach ($targets as $type => $dns) {
-      $this->dns = $dns;
-      management::removeEntryConfirmed($action, $target, $all, $this->tabClass,
-                                  strtoupper($type).'TABS', $this->aclCategory);
-    }
+    $data = parent::parseXML($file);
+    $data['list']['table']['layout'] = '|20px;c|||||110px;c|140px;r|';
+    $data['list']['table']['column'][2] = array(
+      'label'         => 'City',
+      'sortAttribute' => 'city',
+      'sortType'      => 'string',
+      'value'         => '%{filter:link(row,dn,"%s",city)}',
+      'export'        => 'true',
+    );
+    $data['list']['table']['column'][3] = array(
+      'label'         => 'Interlegis code',
+      'sortAttribute' => 'interlegisCode',
+      'sortType'      => 'string',
+      'value'         => '%{filter:link(row,dn,"%s",interlegisCode)}',
+      'export'        => 'true',
+    );
+    $data['list']['table']['column'][4] = array(
+      'label'         => 'Inst. Group',
+      'sortAttribute' => 'instanceGroup',
+      'sortType'      => 'integer',
+      'value'         => '%{filter:link(row,dn,"%d",instanceGroup)}',
+      'export'        => 'true',
+    );
+    $data['list']['table']['column'][5] = array(
+      'label'         => 'Activation date',
+      'sortAttribute' => 'activationDate',
+      'sortType'      => 'integer',
+      'value'         => '%{filter:filterDate(activationDate)}',
+      'export'        => 'true',
+    );
+    $data['list']['table']['column'][6] = array(
+      'label'         => 'Actions',
+      'value'         => '%{filter:actions(dn,row,objectClass)}',
+    );
+    return $data;
   }
 
   static function filterDate()
